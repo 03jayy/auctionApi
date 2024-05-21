@@ -2,7 +2,7 @@ const User = require("../models/user");
 
 exports.addUser = (req, res) => {
   User.addUser(req.body, (err, user) => {
-    if (err) return res.status(400).JSON({ error: err.message });
+    if (err) return res.status(400).json({ error: err.message });
     res.status(201).json(user);
   });
 };
