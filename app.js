@@ -7,15 +7,15 @@ app.use(express.json());
 const userRoutes = require("./routes/users");
 const itemRoutes = require("./routes/items");
 
-app.use("api/users", userRoutes);
-app.use("api/items", itemRoutes);
+app.use("/api/users", userRoutes);
+app.use("/api/items", itemRoutes);
 
 // Health check
 app.get("/status", (req, res) => {
   const status = {
     Status: "Running",
   };
-  response.send(status);
+  res.send(status);
 });
 
 app.listen(PORT, () => {
