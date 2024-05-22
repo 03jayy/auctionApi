@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Make a Payment</title>
+        <link rel="stylesheet" href="css/style.css" />
+    </head>
+    <body>
+        <h1>Make a Payment</h1>
+        <form id="payment-form">
+            <div id="card-element">
+                <!-- Stripe.js injects the Card Element -->
+            </div>
+            <button id="submit">Pay</button>
+            <div id="error-message"></div>
+        </form>
+        <script src="https://js.stripe.com/v3/"></script>
+        <script src="js/payment.js"></script>
+    </body>
+</html>
