@@ -1,19 +1,38 @@
-const stripe = require("../config/stripe");
+const paypal = require("../config/paypal");
+const checkoutNodeJssdk = require("@paypal/checkout-server-sdk");
 
-exports.createPaymentIntent = async (req, res) => {
+exports.createOrder = async (req, res) => {
+  const request = new checkoutNodeJssdk.orders.OrdersCreateRequest();
+  request.prefer("return=representation");
+  request.requestBody({
+    intent: "CAPTURE",
+    purchase_units: [
+      {
+        amount: {
+          currency_code: "USD",
+          value: "50.00",
+        },
+      },
+    ],
+  });
+
   try {
-    const { amount, currency } = req.body;
+    const order = await paypal.client().execute(request);
+    res.json({ id: order.result.id });
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+};
 
-    // Create a PaymentIntent with the order amount and currency
-    const paymentIntent = await stripe.paymentIntents.create({
-      amount,
-      currency,
-    });
+exports.captureOrder = async (req, res) => {
+  const orderId = req.params.id;
+  const request = new checkoutNodeJssdk.orders.OrdersCaptureRequest(orderId);
+  request.requestBody({});
 
-    res.status(201).json({
-      clientSecret: paymentIntent.client_secret,
-    });
-  } catch (error) {
-    res.status(400).json({ error: error.message });
+  try {
+    const capture = await paypal.client().execute(request);
+    res.json(capture.result);
+  } catch (err) {
+    res.status(500).send(err.message);
   }
 };
