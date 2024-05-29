@@ -10,17 +10,27 @@ import {
   VStack,
   useToast,
 } from "@chakra-ui/react";
+import { loginUser } from "./actions";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const toast = useToast();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     // Here you would typically make an API request to log in the user
     console.log("Email:", email);
     console.log("Password:", password);
+    const userInfo = {
+      name: "Rafael",
+      email: email,
+    };
+    dispatch(loginUser(userInfo));
     // Reset the form fields after submission
     setEmail("");
     setPassword("");
@@ -32,6 +42,7 @@ const Login = () => {
       duration: 5000,
       isClosable: true,
     });
+    navigate("/");
   };
 
   return (
