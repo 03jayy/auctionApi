@@ -1,6 +1,17 @@
 // src/Home.js
 import React from "react";
-import { Box, Button, Heading, Text, VStack, useToast } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Heading,
+  Flex,
+  Text,
+  VStack,
+  Container,
+  Spacer,
+  useToast,
+  HStack,
+} from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logoutUser } from "./actions";
@@ -16,40 +27,28 @@ const Home = () => {
   };
 
   return (
-    <Box
-      minH="100vh"
-      display="flex"
-      alignItems="center"
-      justifyContent="center"
-      bgImage="url('https://via.placeholder.com/1920x1080')"
-      bgSize="cover"
-      bgPosition="center"
-      bgRepeat="no-repeat"
-    >
+    <VStack minH="100vh" minW="100vw" display="flex" alignItems="center">
+      {/*Navbar */}
       <Box
-        maxW="md"
-        w="full"
-        bg="rgba(255, 255, 255, 0.8)"
-        p={8}
-        boxShadow="md"
-        borderRadius="md"
-        textAlign="center"
+        bgColor={"blue"}
+        width="100%"
+        height="50px"
+        color={"white"}
+        padding="5px"
       >
-        <Heading mb={6}>Welcome to AuctionEase</Heading>
-        <Text mb={4}>Your one-stop destination for online auctions.</Text>
-        <VStack spacing={4}>
-          {!isLoggedIn ? (
+        <HStack justify={"flex-end"} align={"center"} width={"100%"}>
+          <Container>
+            <Text>AuctionEase</Text>
+          </Container>
+          <Container>
             <Button colorScheme="blue" onClick={() => navigate("/login")}>
               Login
             </Button>
-          ) : (
-            <Button colorScheme="green" onClick={handleLogout}>
-              Log Out
-            </Button>
-          )}
-        </VStack>
+            <Button onClick={handleLogout}>Logout</Button>
+          </Container>
+        </HStack>
       </Box>
-    </Box>
+    </VStack>
   );
 };
 

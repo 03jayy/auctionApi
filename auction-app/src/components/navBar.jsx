@@ -10,12 +10,10 @@ function navBar() {
         <a href="/#">Home</a>
         <a href="/#">User</a>
         <a href="/#">Home</a>
-        <button>
-          <faTimes />
-        </button>
+        <button></button>
       </nav>
     </header>
   );
 }
 
-export default navBar();
+export default navBar;
