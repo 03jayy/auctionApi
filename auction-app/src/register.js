@@ -1,4 +1,3 @@
-// src/Register.js
 import React, { useState } from "react";
 import {
   Box,
@@ -9,6 +8,7 @@ import {
   Heading,
   VStack,
   useToast,
+  Text,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 
@@ -18,6 +18,10 @@ const Register = () => {
   const [name, setName] = useState("");
   const toast = useToast();
   const navigate = useNavigate();
+
+  const handleLogin = () => {
+    navigate("/login");
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -68,10 +72,19 @@ const Register = () => {
       bg="gray.50"
       p={4}
     >
-      <Box maxW="md" w="full" bg="white" p={8} boxShadow="md" borderRadius="md">
-        <Heading mb={6}>AuctionEase Register</Heading>
+      <Box
+        p={4}
+        borderWidth={1}
+        borderRadius="lg"
+        boxShadow="lg"
+        maxW="md"
+        mx="auto"
+        w="full"
+      >
+        <Heading mt={4}>Join AuctionEase today</Heading>
+        <Text mb={4}>Please enter your details.</Text>
         <form onSubmit={handleSubmit}>
-          <VStack spacing={4}>
+          <VStack spacing={3}>
             <FormControl id="name" isRequired>
               <FormLabel>Full Name</FormLabel>
               <Input
@@ -98,6 +111,9 @@ const Register = () => {
             </FormControl>
             <Button type="submit" colorScheme="blue" width="full">
               Register
+            </Button>
+            <Button color={"gray.1000"} width="full" onClick={handleLogin}>
+              Login
             </Button>
           </VStack>
         </form>

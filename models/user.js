@@ -18,6 +18,13 @@ class User {
     });
   }
 
+  static getAllUsers(callback) {
+    const sql = "SELECT * FROM users";
+    db.all(sql, (err, rows) => {
+      callback(err, rows);
+    });
+  }
+
   static editUser(id, user, callback) {
     const { name, email, password } = user;
     const sql =
@@ -31,6 +38,27 @@ class User {
     const sql = "DELETE FROM users WHERE id = ?";
     db.run(sql, [id], function (err) {
       callback(err, this.changes);
+    });
+  }
+
+  static authenticateUser(email, password, callback) {
+    const sql = "SELECT * FROM users WHERE email = ?";
+    db.get(sql, [email], (err, user) => {
+      if (err) {
+        callback(err);
+        return;
+      }
+
+      if (!user) {
+        callback(null, null); // User not found
+        return;
+      }
+
+      if (user.password === password) {
+        callback(null, user); // Password matches
+      } else {
+        callback(null, false); // Password does not match
+      }
     });
   }
 }

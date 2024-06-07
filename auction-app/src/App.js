@@ -1,6 +1,5 @@
 // src/App.js
 import React from "react";
-import navBar from "./components/navBar";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Login from "./LoginPage";
 import Register from "./register";
@@ -11,7 +10,6 @@ function App() {
   return (
     <Router>
       <React.Fragment>
-        <navBar />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />

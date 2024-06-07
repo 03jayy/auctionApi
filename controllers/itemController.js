@@ -21,6 +21,13 @@ exports.getItem = (req, res) => {
   });
 };
 
+exports.getAllItems = (req, res) => {
+  Item.getAllItems((err, items) => {
+    if (err) return res.status(400).json({ error: err.message });
+    res.json(items);
+  });
+};
+
 exports.editItem = (req, res) => {
   Item.editItem(req.params.id, req.body, (err, item) => {
     if (err) return res.status(400).json({ error: err.message });

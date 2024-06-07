@@ -1,10 +1,10 @@
-import { createStore } from "redux";
+import { createStore, applyMiddleware } from "redux";
 
 const initialState = {
   isLoggedIn: false,
   user: {
-    name: "",
     email: "",
+    password: "",
   },
 };
 
@@ -21,8 +21,8 @@ const reducer = (state = initialState, action) => {
         ...state,
         isLoggedIn: false,
         user: {
-          name: "",
           email: "",
+          password: "",
         },
       };
     default:
@@ -30,6 +30,6 @@ const reducer = (state = initialState, action) => {
   }
 };
 
-const store = createStore(reducer);
+const store = createStore(reducer, initialState, applyMiddleware());
 
 export default store;
