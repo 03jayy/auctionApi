@@ -1,5 +1,6 @@
 // src/Login.js
 import React, { useState } from "react";
+import { login } from "./asyncActions";
 import {
   Box,
   Button,
@@ -9,10 +10,10 @@ import {
   Heading,
   VStack,
   useToast,
+  Text,
 } from "@chakra-ui/react";
-import { loginUser } from "./actions";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -20,6 +21,11 @@ const Login = () => {
   const toast = useToast();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const isLoggedIn = useSelector((state) => state.isLoggedIn);
+
+  const handleRegister = () => {
+    navigate("/register");
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -27,22 +33,24 @@ const Login = () => {
     console.log("Email:", email);
     console.log("Password:", password);
     const userInfo = {
-      name: "Rafael",
       email: email,
+      password: password,
     };
-    dispatch(loginUser(userInfo));
+    dispatch(login(userInfo));
     // Reset the form fields after submission
     setEmail("");
     setPassword("");
-    // For now, we'll just show a success toast
-    toast({
-      title: "Login successful.",
-      description: "Welcome back to AuctionEase!",
-      status: "success",
-      duration: 5000,
-      isClosable: true,
-    });
-    navigate("/");
+
+    if (isLoggedIn) {
+      toast({
+        title: "Login successful.",
+        description: "Welcome back to AuctionEase!",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
+      navigate("/");
+    }
   };
 
   return (
@@ -54,10 +62,19 @@ const Login = () => {
       bg="gray.50"
       p={4}
     >
-      <Box maxW="md" w="full" bg="white" p={8} boxShadow="md" borderRadius="md">
-        <Heading mb={6}>AuctionEase Login</Heading>
+      <Box
+        p={4}
+        borderWidth={1}
+        borderRadius="lg"
+        boxShadow="lg"
+        maxW="md"
+        mx="auto"
+        w="full"
+      >
+        <Heading mt={4}>Welcome back!</Heading>
+        <Text mb={4}>Please enter your details.</Text>
         <form onSubmit={handleSubmit}>
-          <VStack spacing={4}>
+          <VStack spacing={3}>
             <FormControl id="email" isRequired>
               <FormLabel>Email address</FormLabel>
               <Input
@@ -76,6 +93,9 @@ const Login = () => {
             </FormControl>
             <Button type="submit" colorScheme="blue" width="full">
               Login
+            </Button>
+            <Button color={"gray.1000"} width="full" onClick={handleRegister}>
+              Register
             </Button>
           </VStack>
         </form>

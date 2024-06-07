@@ -4,9 +4,13 @@ class Item {
   static addItem(item, callback) {
     const { name, quantity, price, category, description } = item;
     const sql =
-      " INSERT INTO auction (productName, quantity, procePerUnit, productCategory, productDescription) VALUES (?, ?, ?, ?, ?)";
+      " INSERT INTO auction (productName, quantity, pricePerUnit, productCategory, productDescription) VALUES (?, ?, ?, ?, ?)";
     db.run(sql, [name, quantity, price, category, description], function (err) {
-      callback(err, { id: this.lastID, ...item });
+      if (err) {
+        callback(err, null);
+      } else {
+        callback(null, { id: this.lastID, ...item });
+      }
     });
   }
 
@@ -14,6 +18,13 @@ class Item {
     const sql = "SELECT * FROM auction WHERE id = ?";
     db.get(sql, [id], (err, row) => {
       callback(err, row);
+    });
+  }
+
+  static getAllItems(callback) {
+    const sql = "SELECT * FROM auction";
+    db.all(sql, [], (err, rows) => {
+      callback(err, rows);
     });
   }
 
