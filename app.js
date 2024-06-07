@@ -9,9 +9,12 @@ app.use(
     origin: "http://localhost:3000",
   }),
 );
+const stripe = require("stripe");
+app.use(cors());
 
 const userRoutes = require("./routes/users");
 const itemRoutes = require("./routes/items");
+const paymentRoutes = require("./routes/payments");
 
 app.use("/api/users", userRoutes);
 app.use("/api/items", itemRoutes);
