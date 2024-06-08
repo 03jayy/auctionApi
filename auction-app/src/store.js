@@ -1,10 +1,11 @@
-import { createStore, applyMiddleware } from "redux";
+import { createStore } from "redux";
 
 const initialState = {
   isLoggedIn: false,
   user: {
-    email: "",
-    password: "",
+    id: 0,
+    name: "",
+    email: ""
   },
 };
 
@@ -21,15 +22,21 @@ const reducer = (state = initialState, action) => {
         ...state,
         isLoggedIn: false,
         user: {
-          email: "",
-          password: "",
+          id: 0,
+          name: "",
+          email: ""
         },
+      };
+    case "UPDATE_USER":
+      return {
+        ...state.user,
+        name: action.payload,
       };
     default:
       return state;
   }
 };
 
-const store = createStore(reducer, initialState, applyMiddleware());
+const store = createStore(reducer);
 
 export default store;

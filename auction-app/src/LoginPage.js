@@ -1,6 +1,6 @@
 // src/Login.js
 import React, { useState } from "react";
-import { login } from "./asyncActions";
+import { loginUser } from "./actions";
 import {
   Box,
   Button,
@@ -27,30 +27,60 @@ const Login = () => {
     navigate("/register");
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Here you would typically make an API request to log in the user
+
     console.log("Email:", email);
     console.log("Password:", password);
+
     const userInfo = {
       email: email,
       password: password,
     };
-    dispatch(login(userInfo));
-    // Reset the form fields after submission
-    setEmail("");
-    setPassword("");
 
-    if (isLoggedIn) {
+    // Make an API request to register the user
+    try {
+      const response = await fetch("http://localhost:3030/api/users/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userInfo),
+      });
+
+      if (!response.ok) {
+        throw new Error("Login failed");
+      }
+
+      const data = await response.json();
+      console.log("Login successful:", data);
+      // Show success toast
       toast({
         title: "Login successful.",
-        description: "Welcome back to AuctionEase!",
+        description: "You are now logged in.",
         status: "success",
         duration: 5000,
         isClosable: true,
       });
+
+      dispatch(loginUser({
+        id: data.user.id,
+        name: data.user.name,
+        email: data.user.email
+      }));
       navigate("/");
+
+    } catch (error) {
+      console.error("Error:", error);
+      toast({
+        title: "Login failed.",
+        description: "Please try again.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
     }
+
   };
 
   return (
@@ -91,7 +121,7 @@ const Login = () => {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </FormControl>
-            <Button type="submit" colorScheme="blue" width="full">
+            <Button type="submit" bg="blue" color="white" _hover={{ bg: "grey" }} width="full">
               Login
             </Button>
             <Button color={"gray.1000"} width="full" onClick={handleRegister}>

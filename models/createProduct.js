@@ -1,4 +1,4 @@
-const stripe = require('stripe')('sk_test_51PJ2HrKTDh0OrkSjVzQE24cX5yGC6tg9FupdX8skNYu2YA8RNDUP6vxbHjNHCBLRsLG0gpROSM1EzNthUbkeqYuN004TckxaZm'); // Replace with your Stripe secret key
+const stripe = require('stripe')('sk_test_51PJ2BDP1QytsEo5aGArjBS7PoZgiafH5ZhN70Ycqznirp19y4wbbPKsE290P1IfOui7VmVIXgg3RnKwqSI7vqhGR00K9awoqQf');
 
 // Define the createProduct function
 async function createProduct(name, description, price) {
@@ -9,7 +9,7 @@ async function createProduct(name, description, price) {
     });
 
     const productPrice = await stripe.prices.create({
-      unit_amount: price * 100, // Ensure price is in cents
+      unit_amount: price * 100,
       currency: 'usd',
       product: product.id,
     });

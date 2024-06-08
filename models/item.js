@@ -1,9 +1,9 @@
 const db = require("../dataBase/db");
 const createProduct = require('./createProduct');
+
 class Item {
   static async addItem(item, callback) {
     const { name, quantity, price, category, description } = item;
-
     try {
       const result = await createProduct(name, description, price);
 
@@ -22,7 +22,7 @@ class Item {
   }
 
   static getItem(id, callback) {
-    const sql = "SELECT * FROM auction WHERE id = ?";
+    const sql = "SELECT * FROM auction WHERE productID = ?";
     db.get(sql, [id], (err, row) => {
       callback(err, row);
     });

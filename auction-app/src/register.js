@@ -10,7 +10,9 @@ import {
   useToast,
   Text,
 } from "@chakra-ui/react";
+import { loginUser } from "./actions";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
 const Register = () => {
   const [email, setEmail] = useState("");
@@ -18,6 +20,7 @@ const Register = () => {
   const [name, setName] = useState("");
   const toast = useToast();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleLogin = () => {
     navigate("/login");
@@ -27,12 +30,12 @@ const Register = () => {
     e.preventDefault();
     // Make an API request to register the user
     try {
-      const response = await fetch("http://localhost:5000/register", {
+      const response = await fetch("http://localhost:3030/api/users", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password, name }),
+        body: JSON.stringify({ name, email, password }),
       });
 
       if (!response.ok) {
@@ -49,8 +52,12 @@ const Register = () => {
         duration: 5000,
         isClosable: true,
       });
-      // Redirect to the login page
-      navigate("/login");
+      dispatch(loginUser({
+        id: data.id,
+        name: data.name,
+        email: data.email
+      }));
+      navigate("/");
     } catch (error) {
       console.error("Error:", error);
       toast({
@@ -109,7 +116,7 @@ const Register = () => {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </FormControl>
-            <Button type="submit" colorScheme="blue" width="full">
+            <Button type="submit" bg="blue" color="white" _hover={{ bg: "grey" }} width="full">
               Register
             </Button>
             <Button color={"gray.1000"} width="full" onClick={handleLogin}>
