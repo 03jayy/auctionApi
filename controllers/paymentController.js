@@ -1,17 +1,21 @@
-const stripe = require("stripe")("your_test_secret_key");
+const stripe = require("stripe")("sk_test_51PJ2BDP1QytsEo5aGArjBS7PoZgiafH5ZhN70Ycqznirp19y4wbbPKsE290P1IfOui7VmVIXgg3RnKwqSI7vqhGR00K9awoqQf");
 
-exports.createPaymentIntent = async (req, res) => {
-  const { amount, currency } = req.body;
+exports.createPaymentSession = async (req, res) => {
+  const { success_url, priceID, quantity } = req.body;
 
   try {
-    const paymentIntent = await stripe.paymentIntents.create({
-      amount,
-      currency,
+    const session = await stripe.checkout.sessions.create({
+      success_url: success_url,
+      line_items: [
+        {
+          price: priceID,
+          quantity: quantity,
+        },
+      ],
+      mode: 'payment',
     });
 
-    req.send({
-      clientSecret: paymentIntent.client_secret,
-    });
+    res.json({ url: session.url })
   } catch (error) {
     res.status(500).send({ error: errormessage });
   }
