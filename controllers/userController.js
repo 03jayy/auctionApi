@@ -33,7 +33,7 @@ exports.deleteUser = (req, res) => {
   User.deleteUser(req.params.id, (err, changes) => {
     if (err) return res.status(400).json({ error: err.message });
     if (changes === 0) return res.status(404).json({ error: "User not found" });
-    res.status(204).send();
+    res.status(204).json({ message: "User deleted successfully" });
   });
 };
 

@@ -22,7 +22,7 @@ class Item {
   }
 
   static getItem(id, callback) {
-    const sql = "SELECT * FROM auction WHERE id = ?";
+    const sql = "SELECT * FROM auction WHERE productID = ?";
     db.get(sql, [id], (err, row) => {
       callback(err, row);
     });
