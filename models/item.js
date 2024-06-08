@@ -1,9 +1,9 @@
 const db = require("../dataBase/db");
 const createProduct = require('./createProduct');
+
 class Item {
   static async addItem(item, callback) {
     const { name, quantity, price, category, description } = item;
-
     try {
       const result = await createProduct(name, description, price);
 
