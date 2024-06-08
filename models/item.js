@@ -1,17 +1,24 @@
 const db = require("../dataBase/db");
-
+const createProduct = require('./createProduct');
 class Item {
-  static addItem(item, callback) {
+  static async addItem(item, callback) {
     const { name, quantity, price, category, description } = item;
-    const sql =
-      " INSERT INTO auction (productName, quantity, pricePerUnit, productCategory, productDescription) VALUES (?, ?, ?, ?, ?)";
-    db.run(sql, [name, quantity, price, category, description], function (err) {
-      if (err) {
-        callback(err, null);
-      } else {
-        callback(null, { id: this.lastID, ...item });
-      }
-    });
+
+    try {
+      const result = await createProduct(name, description, price);
+
+      const sql =
+        " INSERT INTO auction (productName, quantity, pricePerUnit, productCategory, productDescription, stripePriceID) VALUES (?, ?, ?, ?, ?, ?)";
+      db.run(sql, [name, quantity, price, category, description, result.productPrice.id], function(err) {
+        if (err) {
+          callback(err, null);
+        } else {
+          callback(null, { id: this.lastID, ...item, stripePriceID: result.productPrice.id });
+        }
+      });
+    } catch (error) {
+      callback(error, null);
+    }
   }
 
   static getItem(id, callback) {
